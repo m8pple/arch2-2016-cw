@@ -275,7 +275,6 @@ SUBU  |  Subtract unsigned                        | 1  X        |
 SW    |  Store word                               | 2  XX       |
 XOR   |  Bitwise exclusive or                     | 1  X        |
 XORI  |  Bitwise exclusive or immediate           | 2  XX       |
------------------------------------------------------------------
 
 This is not quite an exhaustive list of MIPS-1 instructions
 (as was originally sort of implied). Some were deliberately left out
