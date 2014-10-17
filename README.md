@@ -277,6 +277,11 @@ XOR   |	  Bitwise exclusive or                      | 1  X        |
 XORI  |	  Bitwise exclusive or immediate            | 2  XX       |
 ------------------------------------------------------------------
 
+This is not quite an exhaustive list of MIPS-1 instructions
+(as was originally sort of implied). Some were deliberately left out
+for teaching purposes, while others are not as important and tend
+to penalise people for making the same mistakes in multiple places.
+
 There are many instructions, but there is a lot of commonality
 between some instructions. Think about the underlying
 digital data-path in a real processor, and use that to identify
