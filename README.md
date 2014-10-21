@@ -189,6 +189,37 @@ instructions working at that point, which is fine. Submit
 that, and it will give you some confidence that the
 way you are doing things is correct.
 
+Compilation Environment
+-----------------------
+
+For most people it is sufficient to say: the target compilation
+is plain C or C++, and the target environment is the C and/or
+C++ standard library. It is easy to stay within platform independent
+APIs, as no platform-specific interaction with the environment is
+needed during execution. So it should work happily on both linux
+and windows.
+
+The compilation environment will be c99 or C++11, depending
+on the type of your source file. The target compiler
+used during assessment is any or all of gcc-4.8, gcc-4.9, clang 2.9,
+clang 3.0, icc 12, icc 13, Visual Studio 12, or
+Visual Studio 13. The target platform is any of Windows 7,
+Windows Vista, Cygwin 32, Cygwin 64, or Ubuntu 14.04.1.
+
+During compilation, the include directories will be set up
+to have the ``include'' directory (containing ``mips.h'')
+on the include path. The directory structure during compilation
+will be the same as that required during submission, so the
+relative location of things will stay the same.
+
+When running your test suite, the executable will be launched
+with its working directory as src/[your_login], so if you
+wish to read files you can place them there (or in sub-directories).
+
+When your CPU simulator is executing, you can make no assumptions
+about the working directory, or the presence or absence of other
+files.
+
 Managing expectations
 ---------------------
 
