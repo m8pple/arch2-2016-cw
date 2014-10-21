@@ -103,7 +103,7 @@ mips_error mips_mem_write(
     really know what is being released (it could be memory, it could
     be file handles), and shouldn't care. Calling mips_mem_free on an
     empty (zero) handle is legal. Calling mips_mem_free twice on the
-    same handle is illegal, and the resulting behaviour is undefined
+    same non-empty handle is illegal, and the resulting behaviour is undefined
     (most likely a crash).
     
     A pattern that can be useful is:
