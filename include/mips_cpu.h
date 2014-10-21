@@ -93,10 +93,12 @@ mips_error mips_cpu_get_pc(
 	inspect what happened and find out what went wrong. So
 	this should be true:
 	
-		uint32_t pc=mips_cpu_get_pc(cpu);
+		uint32_t pcOrig, pcGot;
+		mips_cpu_get_pc(cpu, &pcOrig);
 		mips_error err=mips_cpu_step(cpu);
 		if(err!=mips_Success){
-			assert(mips_cpu_get_pc(cpu)==pc);
+			mips_cpu_get_pc(cpu, &pcGot);
+			assert(pcOrig==pcGot);
 			assert(mips_cpu_step(cpu)==err);
 	    }
 	
