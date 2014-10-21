@@ -77,8 +77,14 @@ mips_error mips_cpu_set_pc(
 	uint32_t pc			//!< Address of the next instruction to exectute.
 );
 
-/*! Gets the pc for the next instruction. */
-mips_error mips_cpu_get_pc(mips_cpu_h state, uint32_t *pc);
+/*! Gets the pc for the next instruction.
+	
+	Returns the program counter for the next instruction to be executed.
+*/
+mips_error mips_cpu_get_pc(
+	mips_cpu_h state,	//!< Valid (non-empty) handle to a CPU
+	uint32_t *pc		//!< Where to write the byte address too
+);
 
 /*! Advances the processor by one instruction.
 
