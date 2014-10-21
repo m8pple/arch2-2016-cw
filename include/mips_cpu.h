@@ -104,7 +104,9 @@ mips_error mips_cpu_get_pc(
 	difficult, so _try_ to maintain it, but don't worry too
 	much if under some exceptions it doesn't quite work.
 */
-mips_error mips_cpu_step(mips_cpu_h state);
+mips_error mips_cpu_step(
+	mips_cpu_h state	//! Valid (non-empty) handle to a CPU
+);
 
 /*! Controls printing of diagnostic and debug messages.
 
