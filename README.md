@@ -402,14 +402,87 @@ I think this is quite a nice break-down of the instructions,
 but be careful about the details:
 http://www.mrc.uidaho.edu/mrc/people/jff/digital/MIPSir.html
 
-### Try to work out what you are supposed to do
+# Get started
 
-Try putting in the two source files that you know
-you need to create, and see how far you can get.
+You can either use the skeleton we started to develop in
+class, or start from scratch.
 
-### Come to the lecture on Monday
+Some Questions I've recieved
+----------------------------
 
-We'll be talking a lot more about the coursework.
+### What is the idea of splitting up the tests?
 
-*BUT* - if you haven't done these steps already, you may
-find it difficult to follow what is going on.
+> I am confused about what we are expected to write in test_mips.cpp.
+> In my experience, a test script executes the functions of the system
+> it is testing and checks whether the output/state of the system was
+> expected or not. My instinct would be to have a header file with a
+> C++ function for each MIPS instruction defining the operations of
+> the instruction, then in test_mips I would test those functions by
+> calling them with various values to check they work properly. 
+> 
+> However, from reading the comments you left in the test_mips file
+> you included, it seems like you want us to define the functionality
+> of the different MIPS instructions in this file, which doesn't make
+> it a test script to me.
+> 
+> Can you help clear up my confusion please?
+
+The suggested approach, of decomposing the functionality into
+multiple functions for each instruction then testing them
+individually, makes perfect sense for the developer of a
+particular MIPS implementation. I might choose to do that
+during initial development of the CPU implementation, to
+check the smallest components work. Equally, if I were building
+a hardware cpu I would create test-benches for the ALU, where
+there were different sets of waveforms which would cause
+it to perform an add, a subtract, etc.
+
+The problem is that even though the individual instruction
+operations would be tested, we would not know whether they
+are actually decoded correctly, whether interactions with
+memory work correctly, whether it depends on a particular
+kind of memory, whether each operation behaves correctly
+if it appears after a jump, and so on.
+
+So you are correct that the test_mips file should define the
+functionality, but _only_ the functionality, it should say
+nothing about the implementation of that functionality. If
+you know the initial state of a MIPS, plus the memory it
+is attached to, you should be able to predict precisely what
+the effect of the next instruction executed should be. You could
+do that prediction as a human, by reading the ISA spec and
+thinking, or with the help of code, but it needs to be completely
+seperate from the implementation being tested.
+
+I could have mandated that you must implement one function
+for each of the instructions, and put it in a header, but
+then I would constrain any other implementer. Some people
+may not want one function per operation, and there are good
+reasons for doing that. Equally, it would now be impossible
+to apply the test suite to a digital MIPS in a logic
+simulator, as there is no equivalent way to implement
+those functions in a digital implementation.
+
+### Why is the pointer to mips_mem_read 8 bit?
+
+> We need to read and write 32-bit values, but the argument to
+> mips_mem_read is an 8-bit pointer. Do we need to cast it?
+
+Yes, you need to cast to the type you want to read or write.
+
+The minimum addressable unit for the memory is 8-bits, but
+the block size (minimum transfer) for MIPS is 32-bits. So
+you'll need to cast to and from the types you want to read
+and write:
+
+    uint32_t val;
+    mips_error err=mips_mem_read(mem, 12, 4, (uint32_t*)&val);
+    val=val+1;
+    if(!err)
+        err=mips_mem_write(mem, 12, 4, (uint32_t*)&val);
+
+This should (I haven't compiled it) increment the 32-bit value
+stored at byte address 12.
+
+But... watch out for endianess!
+
