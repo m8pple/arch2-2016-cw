@@ -77,6 +77,8 @@ typedef struct mips_mem_provider *mips_mem_h;
     The implementation is expected to check that the transaction
     matches the alignment and block size requirements, and return an
     error if they are violated.
+    
+    See \ref mips_mem_write for more detailed discussion of its use.
 */
 mips_error mips_mem_read(
     mips_mem_h mem,		//!< Handle to target memory
@@ -90,6 +92,48 @@ mips_error mips_mem_read(
     The implementation is expected to check that the transaction
     matches the alignment and block size requirements, and return an
     error if they are violated.
+    
+    The input pointer is a pointer to bytes, because the RAM is byte
+    addressable, however the transaction size may consist of multiple
+    bytes - indeed, for memories with a block size greater than one,
+    all transactions must be multiple bytes. To write a larger piece
+    of data, you can use pointer casting, or pass in an array. For
+    example, if I want to write 0xFF001100 to address 12, I could do:
+    
+        uint32_t xv=0xFF001100;
+        mips_error err=mips_mem_write(mem, 12, 4, (uint8_t*)&xv);
+    
+    alternatively, I could do:
+    
+        uint8_t xa[4];
+        xa[0]=0x00;
+        xa[1]=0x11;
+        xa[2]=0x00;
+        xa[3]=0xFF;
+        mips_error err=mips_mem_write(mem, 12, 4, xa); 
+
+    or more succinctly:
+    
+        uint8_t xa[4];
+        xa[0]={0x00, 0x11, 0x00, 0xFF};
+        mips_error err=mips_mem_write(mem, 12, 4, xa); 
+    
+    In the second two cases xa is an array of uint8_t, so can also be
+    used as a pointer of type `uint8_t *`.
+    
+    This example assumes a little-endian architecture, such as x86. If
+    the architecture running the  code was big-endian, the first example
+    would need to be changed to:
+    
+        uint32_t xv=0x001100FF;
+        mips_error err=mips_mem_write(mem, 12, 4, (uint8_t*)&xv);
+
+    MIPS is a bi-endian architecture (like ARM), which can be configured
+    to run in either little-endian or big-endian mode. The hardware translates
+    on the fly (after all, endianess conversion is just re-ordering the bytes).
+    
+    For this work, we will have a little-endian (x86) processor running the
+    simulator, but the thing being simulated (MIPS) is big-endian.
 */
 mips_error mips_mem_write(
     mips_mem_h mem,	        //!< Handle to target memory
@@ -136,6 +180,32 @@ void mips_mem_free(mips_mem_h mem);
     to the correct blockSize, and should consist of an integer number
     of blocks. For example, choosing blockSize=4 would result in a RAM
     that only supports aligned 32-bit reads and writes.
+    
+    You can think of the blockSize as being equivalent to the number
+    of wires in the data-bus of the memory. If the only wires you
+    have are readEnable, writeEnable, address, dataIn, and dataOut,
+    then within one cycle you could do a write by asserting writeEnable=1,
+    specifying the address, and driving the data to be written onto dataIn.
+    Or you could perform a read by asserting readEnable=1, driving the
+    address bus, and looking at the value that the RAM drives onto dataOut.
+    If blockSize=4, then we would have 32 wires for both dataIn and dataOut,
+    and any address would need to have the two least significant bits as zero.
+    
+    In MIPS the basic unit of transfer is 32-bits, so the granularity of the
+    data bus is also 32-bits, and blockSize must be 4.
+    
+    "Why do we even have this blockSize if it is always 4?" : It is in
+    anticipation of a future extension, and a mistake on my part (from
+    a teaching point of view). I should have given it the simpler signature of:
+    
+        mips_mem_h mips_mem_create_ram(uint32_t cbMem);
+    
+    and stated that it creates a RAM of the given size with a granularity of 4.
+    
+    "How can MIPS do SH (store half) efficiently if this is the case?" - An
+    actual MIPS implementation would have what are called "byte-enables",
+    which are extra signals saying which bytes within the data bus are
+    valid, but I didn't include them in the API as they complicate things.
 */
 mips_mem_h mips_mem_create_ram(
     uint32_t cbMem,	//!< Total number of bytes of ram
