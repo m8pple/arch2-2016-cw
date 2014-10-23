@@ -44,31 +44,31 @@ you are that way inclined), containing the original directory
 structure and files, as well as the files that you have contributed.
 The two key things you will be adding are:
 
- - src/[your_login]/mips_cpu.c or mips_cpu.cpp
+ - `src/[your_login]/mips_cpu.c` or `mips_cpu.cpp`
  
- - src/[your_login]/test_mips.c or test_mips.cpp
+ - `src/[your_login]/test_mips.c` or `test_mips.cpp`
  
 The first part is the implementation of a mips simulator, and
 is essentially a library that implements the api found in
 include/mips_cpu.h. You can use C or C++, either is fine.
 If you want to split into multiple files, then feel free to do
-so - anything which matches the pattern src/[your_login]/mips_cpu_*.c
-or src/[your_login]/mips_cpu_*.cpp will also get compiled into
+so - anything which matches the pattern `src/[your_login]/mips_cpu_*.c`
+or `src/[your_login]/mips_cpu_*.cpp` will also get compiled into
 your library. 
 
 The second part is the test suite which will drive your
 simulator and make it do things. This is a C or C++ program
 (so it will have a main function), and should be either
-src/[your_login]/test_mips.c or src/[your_login]/test_mips.cpp.
+`src/[your_login]/test_mips.c` or `src/[your_login]/test_mips.cpp`.
 Again, if you want to split into multiple files, anything
-that matches the pattern src/[your_login]/test_mips_*.c or
-src/[your_login]/test_mips_*.cpp will get compiled into
+that matches the pattern `src/[your_login]/test_mips_*.c` or
+`src/[your_login]/test_mips_*.cpp` will get compiled into
 your program.
 
 You can also add your own private header files (generally
 a good idea), which should be part of the submitted zip file,
 but they don't need to follow any specific pattern. However,
-they should be completely located within the src/[your_login]
+they should be completely located within the `src/[your_login]`
 directory or a sub-directory of it. Note that your simulator
 and your test suite are two different components, so do not
 rely on the specific behaviour of _your_ simulator, it should
@@ -207,14 +207,14 @@ Visual Studio 13. The target platform is any of Windows 7,
 Windows Vista, Cygwin 32, Cygwin 64, or Ubuntu 14.04.1.
 
 During compilation, the include directories will be set up
-to have both the ``include'' directory (containing ``mips.h'')
-and the ``src/[your_login]'' directory on the include path.
+to have both the `include` directory (containing `mips.h`)
+and the `src/[your_login]` directory on the include path.
 The directory structure during compilation
 will be the same as that required during submission, so the
 relative location of things will stay the same.
 
 When running your test suite, the executable will be launched
-with its working directory as src/[your_login], so if you
+with its working directory as `src/[your_login]`, so if you
 wish to read files you can place them there (or in sub-directories).
 
 When your CPU simulator is executing, you can make no assumptions
