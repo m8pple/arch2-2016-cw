@@ -33,7 +33,7 @@ struct instr_info_t
 
 static const instr_info_t sg_instructionsArray[]=
 {
-    {"<internal>", "Tests of things other than intructions."},
+    {"<INTERNAL>", "Tests of things other than intructions."},
     {"ADD","Add (with overflow)"},
     {"ADDI","Add immediate (with overflow)"},
     {"ADDIU","Add immediate unsigned (no overflow)"},
