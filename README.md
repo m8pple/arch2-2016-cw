@@ -207,8 +207,9 @@ Visual Studio 13. The target platform is any of Windows 7,
 Windows Vista, Cygwin 32, Cygwin 64, or Ubuntu 14.04.1.
 
 During compilation, the include directories will be set up
-to have the ``include'' directory (containing ``mips.h'')
-on the include path. The directory structure during compilation
+to have both the ``include'' directory (containing ``mips.h'')
+and the ``src/[your_login]'' directory on the include path.
+The directory structure during compilation
 will be the same as that required during submission, so the
 relative location of things will stay the same.
 
