@@ -146,6 +146,44 @@ mips_error mips_cpu_step(
 	However, this is completely implementation defined behaviour,
 	so your simulator does not have to print anything for
 	any debug level if you don't want to. 
+	
+	The intent is that this function merely modifies the type
+	of reporting that is performed during mips_cpu_step:
+	
+		// Enable basic debugging to stderr
+		mips_cpu_set_debug_level(cpu, 1, stderr);
+		
+		// The implementation may now choose to print things
+		// to stderr (what exactly is up to the implementation)
+		mips_cpu_step(cpu);	// e.g. prints "pc = 0x12, encoding=R"
+		
+		// Tell the CPU to print nothing
+		mips_cpu_set_debug_level(cpu, 0, NULL);
+		
+		// Now the implementation must not print any debug information
+		mips_cpu_step(cpu);
+		
+		// Send detailed debug output to a text file
+		FILE *dump=fopen("dump.txt", "wt");
+		mips_cpu_set_debug_level(cpu, 2, dump);
+		
+		// Run lots of instructions until the CPU reports an error.
+		// The implementation can write lots of useful information to
+		// the file
+		mips_error err=mips_Success;
+		while(!err) {
+			mips_cpu_step(cpu);
+		};
+		
+		// Detach the text file, and close it
+		mips_cpu_set_debug_level(cpu, 0, NULL);
+		fclose(dump);
+		
+		// You can now read through the text file "dump.txt" to see what happened
+
+	However, you could decide that you want to print something out
+	at the point that mips_cpu_set_debug_level is called with level>0,
+	such as the current PC and registers. Up to you.
 */
 mips_error mips_cpu_set_debug_level(mips_cpu_h state, unsigned level, FILE *dest);
 
