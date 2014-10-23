@@ -487,3 +487,55 @@ stored at byte address 12.
 
 But... watch out for endianess!
 
+I've put other examples in the documentation for mips_mem_write.
+
+### How do I implement mips_mem_provider?
+
+> How to define mips_mem_provider? I think that I need to set up an 
+> array of 8 bit integers, and have a mips_cpu_h pointing to my CPU in 
+> operation. My problem is that I am unsure how to choose an appropriate 
+> initial size for the array given that the create_ram function decides 
+> how large the array will be. Would I need to include the block size?
+
+An implementation of mips_mem_provider is defined for you in the
+`src/shared_mips_mem_ram.cpp` file, so you don't need to implement
+that, just add it into the compilation (e.g. add as an existing
+source file into eclipse).
+
+As for memory size, you should create a RAM that is big enough
+both to contain the instructions you want to test, and any
+data that you want to be able to read/write (e.g. by LW or SW)
+during those tests.
+
+### What is the block size?
+
+> What is the purpose of block size? As far as I can workout from the 
+> comments in the code the block size is the smallest transfer one is able 
+> to make, why does the limitation exist and is there a reason we should 
+> pick a certain size?
+
+The block size is equivalent to the number of bits in the address bus.
+I've updated the documentation on mips_mem_create_ram to explain
+this better.
+
+### What exactly goes on inside mips_cpu_step?
+
+> mips_error mips_cpu_step(mips_cpu_h state). Inside this function are 
+> we looking to extract 32-bits from memory at a time, determine whether 
+> it is an RIJ type, then pass on the appropriate segments of the 32 bit 
+> words to a function that completes the operation, then continue 
+> repeating the process until there is no longer anything left in memory?
+
+Yes, for everything up to "continue repeating the process".
+mips_cpu_step should fetch, decode, and execute just one
+instruction, update its state, then return back to the caller.
+
+If the caller wants to execute multiple instructions, they
+must call mips_cpu_step once for each instruction.
+
+### How is mips_cpu_set_debug_level supposed to be used?
+
+It is really down to you - it can do nothing if you prefer. I've
+updated the documentation for the function to give a
+better idea why it might be useful.
+
