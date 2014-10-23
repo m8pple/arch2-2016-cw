@@ -171,13 +171,13 @@ entirely quantitative and metric based.
 
 There are two submission deadlines, one soft, one hard:
 
-- Friday 24th October: deadline for formative (ungraded)
+- Friday 24th October 23:59: deadline for formative (ungraded)
   assessment. If you submit a version by this deadline, it
   will be put through a large subset of the assessment. The
   results (but not a grade), will be returned on Monday 27th.
   Submission is not required, but is obviously encouraged.
 
-- Friday 31st October: deadline for summative (graded)
+- Friday 31st October 23:59: deadline for summative (graded)
   assessment. Whether or not you submitted for the previous
   deadline, everyone must submit for this deadline. This
   will be the part which results in the grade for this
