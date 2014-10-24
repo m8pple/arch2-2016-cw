@@ -403,7 +403,7 @@ I think this is quite a nice break-down of the instructions,
 but be careful about the details:
 http://www.mrc.uidaho.edu/mrc/people/jff/digital/MIPSir.html
 
-# Get started
+### Get started
 
 You can either use the skeleton we started to develop in
 class, or start from scratch.
@@ -533,9 +533,47 @@ instruction, update its state, then return back to the caller.
 If the caller wants to execute multiple instructions, they
 must call mips_cpu_step once for each instruction.
 
-### How is mips_cpu_set_debug_level supposed to be used?
+### How is `mips_cpu_set_debug_level` supposed to be used?
 
 It is really down to you - it can do nothing if you prefer. I've
 updated the documentation for the function to give a
 better idea why it might be useful.
 
+## What is the point of `mips_cpu_get_pc`?
+
+> Why is the mips_cpu_get_pc function necessary, can't you
+> just get the value of the pc by doing state->pc, as you
+> did in the skeleton file? 
+
+You control the internals of the cpu state,
+so on the `mips_cpu.c` side, you can totally
+reach into `state->pc` and read it out. Or
+you can use `mips_cpu_get_pc`. Either is fine,
+because you are on the implementation side
+of the API.
+
+However, on the `mips_test.cpp` side you are not
+allowed to know how or where the pc is stored,
+so `mips_cpu_get_pc` exists in order to
+allow the pc to be read from that side. I have
+already written the code that will test your
+CPU, and there is no way I could know whether
+you will do:
+
+    struct mips_cpu_impl{
+      uint32_t pc;
+      uint32_t regs[32];
+    };
+
+or
+
+    struct mips_cpu_impl{
+      uint32_t theseAreMyRegs[32];
+      uint32_t thisIsMyPC;
+    };
+
+or something else.
+
+But I do know that I can call `mips_cpu_get_pc`, and
+no matter how or where you stored it I can find out
+what the current PC is.
