@@ -477,10 +477,10 @@ you'll need to cast to and from the types you want to read
 and write:
 
     uint32_t val;
-    mips_error err=mips_mem_read(mem, 12, 4, (uint32_t*)&val);
+    mips_error err=mips_mem_read(mem, 12, 4, (uint8_t*)&val);
     val=val+1;
     if(!err)
-        err=mips_mem_write(mem, 12, 4, (uint32_t*)&val);
+        err=mips_mem_write(mem, 12, 4, (uint8_t*)&val);
 
 This should (I haven't compiled it) increment the 32-bit value
 stored at byte address 12.
