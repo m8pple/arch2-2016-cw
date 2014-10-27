@@ -313,6 +313,10 @@ This is not quite an exhaustive list of MIPS-1 instructions
 (as was originally sort of implied). Some were deliberately left out
 for teaching purposes, while others are not as important and tend
 to penalise people for making the same mistakes in multiple places.
+Any instruction not covered in this list will not be tested
+as part of the assessment, and any implementation defined
+behaviour is fine (return an error, or actually implement
+the instruction).
 
 There are many instructions, but there is a lot of commonality
 between some instructions. Think about the underlying
