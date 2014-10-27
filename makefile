@@ -24,3 +24,8 @@ USER_CPU_SRCS = \
 USER_CPU_OBJECTS = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(USER_CPU_SRCS)))
 
 src/$(LOGIN)/test_mips : $(DEFAULT_OBJECTS) $(USER_CPU_OBJECTS)
+
+fragments/run_fibonacci : $(DEFAULT_OBJECTS) $(USER_CPU_OBJECTS)
+    
+fragments/run_addu : $(DEFAULT_OBJECTS) $(USER_CPU_OBJECTS)
+
