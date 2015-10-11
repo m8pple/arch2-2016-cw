@@ -1,4 +1,4 @@
-Architecture II 2014, Coursework 1
+Architecture II 2015, Coursework 1
 ==================================
 
 Goals of this coursework
@@ -39,10 +39,10 @@ should do. The API acts as the interface between your
 simulator and your test-suite, and indeed _any_ simulator
 and test-suite.
 
-Your submitted code will consist of a zip file (or .tar.gz, if
-you are that way inclined), containing the original directory
-structure and files, as well as the files that you have contributed.
-The two key things you will be adding are:
+Your submitted code will consist of a zip file, containing
+the original directory structure and files, as well as the
+files that you have contributed. The two key things you will
+be adding are:
 
  - `src/[your_login]/mips_cpu.c` or `mips_cpu.cpp`
  
@@ -107,11 +107,6 @@ The directory structure should look like:
     |
     +-(anything else you want, but it won't be available in the environment)
 
-I accept that it is a bit painful making sure you get exactly
-the right base directory in a zip, so during assessment I will
-go looking for mips.h, and will use that to anchor the rest
-of the directory tree.
-
 Your submitted code will need to work within the
 compilation environment specified later on (another
 part of the specification). The file names and
@@ -171,13 +166,13 @@ entirely quantitative and metric based.
 
 There are two submission deadlines, one soft, one hard:
 
-- Friday 24th October 23:59: deadline for formative (ungraded)
+- Friday 23th October 22:00: deadline for formative (ungraded)
   assessment. If you submit a version by this deadline, it
-  will be put through a large subset of the assessment. The
-  results (but not a grade), will be returned on Monday 27th.
+  will be put through a subset of the assessment. The
+  results (but not a grade), will be returned on Monday 26th.
   Submission is not required, but is obviously encouraged.
 
-- Monday 3rd November 23:59: deadline for summative (graded)
+- Friday 30th October 22:00: deadline for summative (graded)
   assessment. Whether or not you submitted for the previous
   deadline, everyone must submit for this deadline. This
   will be the part which results in the grade for this
@@ -199,12 +194,10 @@ APIs, as no platform-specific interaction with the environment is
 needed during execution. So it should work happily on both linux
 and windows.
 
-The compilation environment will be c99 or C++11, depending
-on the type of your source file. The target compiler
-used during assessment is any or all of gcc-4.8, gcc-4.9, clang 2.9,
-clang 3.0, icc 12, icc 13, Visual Studio 12, or
-Visual Studio 13. The target platform is any of Windows 7,
-Windows Vista, Cygwin 32, Cygwin 64, or Ubuntu 14.04.1.
+The actual target environment is the lab Ubuntu environment,
+and the version of gcc/g++ installed there. You can develop
+in Windows, MacOS, or another linux, but you need to make sure
+it works in that environment.
 
 During compilation, the include directories will be set up
 to have both the `include` directory (containing `mips.h`)
@@ -278,16 +271,21 @@ BNE   |  Branch on not equal                      | 3  XXX
 DIV   |  Divide                                   | 4  XXXX     
 DIVU  |  Divide unsigned                          | 3  XXXX     
 J     |  Jump                                     | 3  XXX      
-JAL   |  Jump and link                            | 3  XXXX     
+JALR  |  Jump and link register                   | 4  XXXX     
+JAL   |  Jump and link                            | 4  XXXX     
 JR    |  Jump register                            | 3  XXX      
-LB    |  Load byte                                | 4  XXX       
+LB    |  Load byte                                | 3  XXX       
 LBU   |  Load byte unsigned                       | 3  XXX      
+LH    |  Load half-word                           | 3  XXX       
+LHU   |  Load half-word unsigned                  | 3  XXX       
 LUI   |  Load upper immediate                     | 2  XX       
 LW    |  Load word                                | 2  XX       
 LWL   |  Load word left                           | 5  XXXXX    
 LWR   |  Load word right                          | 5  XXXXX    
 MFHI  |  Move from HI                             | 3  XXXX     
 MFLO  |  Move from LO                             | 3  XXXX     
+MTHI  |  Move to HI                               | 3  XXXX     
+MTLO  |  Move to LO                               | 3  XXXX     
 MULT  |  Multiply                                 | 4  XXXX     
 MULTU |  Multiply unsigned                        | 3  XXXX     
 OR    |  Bitwise or                               | 1  X        
@@ -301,6 +299,7 @@ SLTI  |  Set on less than immediate (signed)      | 3  XXX
 SLTIU |  Set on less than immediate unsigned      | 3  XXX      
 SLTU  |  Set on less than unsigned                | 1  X        
 SRA   |  Shift right arithmetic                   | 2  XX       
+SRAV  |  Shift right arithmetic                   | 2  XX       
 SRL   |  Shift right logical                      | 2  XX       
 SRLV  |  Shift right logical variable             | 2  XX       
 SUB   |  Subtract                                 | 2  XX       
@@ -309,10 +308,7 @@ SW    |  Store word                               | 2  XX
 XOR   |  Bitwise exclusive or                     | 1  X        
 XORI  |  Bitwise exclusive or immediate           | 2  XX       
 
-This is not quite an exhaustive list of MIPS-1 instructions
-(as was originally sort of implied). Some were deliberately left out
-for teaching purposes, while others are not as important and tend
-to penalise people for making the same mistakes in multiple places.
+This is a not-quite an exhaustive list of MIPS-1 instructions.
 Any instruction not covered in this list will not be tested
 as part of the assessment, and any implementation defined
 behaviour is fine (return an error, or actually implement
@@ -322,6 +318,25 @@ There are many instructions, but there is a lot of commonality
 between some instructions. Think about the underlying
 digital data-path in a real processor, and use that to identify
 where there are similarities. 
+
+You may get to the point where things start getting very boring,
+and you seem to be doing the same thing over and over, possibly
+by copying and pasting. This is generally an indication that you
+are missing an opportunity to abstract or automate. For example,
+how different are "and", "or", and "xor"? What is the shared
+functionality between "lb", "lw", and "lh"? You may want to
+re-factor your code every once in a while as you work out better
+ways of testing them - the purpose of your test-bench is to
+give you the confidence to do that.
+
+As you move through the instructions you should find that
+you have to think carefully about the first instruction of each type,
+deciding how to implement and test it. The next of the same
+type should be much quicker, then the next almost mechanical, 
+and you'll probably find two-thirds of the instructions are
+done in a minute each. However, you should still expect this to
+take a substantial amount of time, particularly if you plan to do
+all instructions.
 
 I would expect most people to be able to implement and test all
 the 1s and 2s fairly easily. Implementing the 3s is not so
@@ -375,7 +390,7 @@ The submission itself is through blackboard as a zip, so there
 is no requirement to use git. Even if I update the repository,
 you can still just download the zip again and copy your current
 work in - it is deliberately designed so that copying your
-src/<login> directory into the updated source code will work.
+`src/<login>` directory into the updated source code will work.
 
 ### Read the source code
 
@@ -407,13 +422,20 @@ I think this is quite a nice break-down of the instructions,
 but be careful about the details:
 http://www.mrc.uidaho.edu/mrc/people/jff/digital/MIPSir.html
 
-### Get started
+Another summarised version is the [QuickReference](https://www.lri.fr/~de/MIPS.pdf).
+This one is particularly useful as it highlights the commonalities
+between instructions, which both makes implementation clearer, and
+helps to visualise how the hardware works.
 
-You can either use the skeleton we started to develop in
-class, or start from scratch.
 
 Some Questions I've recieved
 ----------------------------
+
+Note to 2015 students: I ran almost the same coursework
+last year, so these are some questions from then. And
+as you would hope and expect, I still have all of their
+submissions in a readily accessible form should I choose
+to diff them against this years submissions.
 
 ### What is the idea of splitting up the tests?
 
