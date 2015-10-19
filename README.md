@@ -65,6 +65,9 @@ that matches the pattern `src/[your_login]/test_mips_*.c` or
 `src/[your_login]/test_mips_*.cpp` will get compiled into
 your program.
 
+Update: by request, I will also include c or C++ files in
+directories matching `src/[your_login]/*`. See issue #2.
+
 You can also add your own private header files (generally
 a good idea), which should be part of the submitted zip file,
 but they don't need to follow any specific pattern. However,
@@ -119,7 +122,7 @@ with it. The given structure allows me to know exactly what
 your code needs in order to compile (I need to tell the compiler
 which source files to link together), and when I want to move
 implementations around I need to know what is important (so
-stuff in src/<your_login>.
+stuff in src/<your_login>).
 
 Assessment criteria
 -------------------
