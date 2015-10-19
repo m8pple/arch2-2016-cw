@@ -269,7 +269,7 @@ BLTZ  |  Branch on less than zero                 | 3  XXX
 BLTZAL|  Branch on less than zero and link        | 4  XXXX     
 BNE   |  Branch on not equal                      | 3  XXX      
 DIV   |  Divide                                   | 4  XXXX     
-DIVU  |  Divide unsigned                          | 3  XXXX     
+DIVU  |  Divide unsigned                          | 4  XXXX     
 J     |  Jump                                     | 3  XXX      
 JALR  |  Jump and link register                   | 4  XXXX     
 JAL   |  Jump and link                            | 4  XXXX     
@@ -282,18 +282,18 @@ LUI   |  Load upper immediate                     | 2  XX
 LW    |  Load word                                | 2  XX       
 LWL   |  Load word left                           | 5  XXXXX    
 LWR   |  Load word right                          | 5  XXXXX    
-MFHI  |  Move from HI                             | 3  XXXX     
-MFLO  |  Move from LO                             | 3  XXXX     
-MTHI  |  Move to HI                               | 3  XXXX     
-MTLO  |  Move to LO                               | 3  XXXX     
+MFHI  |  Move from HI                             | 3  XXX     
+MFLO  |  Move from LO                             | 3  XXX     
+MTHI  |  Move to HI                               | 3  XXX     
+MTLO  |  Move to LO                               | 3  XXX     
 MULT  |  Multiply                                 | 4  XXXX     
-MULTU |  Multiply unsigned                        | 3  XXXX     
+MULTU |  Multiply unsigned                        | 4  XXXX     
 OR    |  Bitwise or                               | 1  X        
 ORI   |  Bitwise or immediate                     | 2  XX       
 SB    |  Store byte                               | 3  XXX      
 SH    |  Store half-word                          | 3  XXX      
 SLL   |  Shift left logical                       | 2  XX       
-SLLV  |  Shift left logical variable              | 3  XX       
+SLLV  |  Shift left logical variable              | 3  XXX       
 SLT   |  Set on less than (signed)                | 2  XX       
 SLTI  |  Set on less than immediate (signed)      | 3  XXX       
 SLTIU |  Set on less than immediate unsigned      | 3  XXX      
@@ -301,7 +301,7 @@ SLTU  |  Set on less than unsigned                | 1  X
 SRA   |  Shift right arithmetic                   | 2  XX       
 SRAV  |  Shift right arithmetic                   | 2  XX       
 SRL   |  Shift right logical                      | 2  XX       
-SRLV  |  Shift right logical variable             | 2  XX       
+SRLV  |  Shift right logical variable             | 3  XXX       
 SUB   |  Subtract                                 | 2  XX       
 SUBU  |  Subtract unsigned                        | 1  X        
 SW    |  Store word                               | 2  XX       
