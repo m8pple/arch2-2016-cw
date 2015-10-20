@@ -52,6 +52,7 @@ static const instr_info_t sg_instructionsArray[]=
     {"DIVU","Divide unsigned"},
     {"J","Jump"},
     {"JAL","Jump and link"},
+    {"JALR","Jump and link register"},
     {"JR","Jump register"},
     {"LB","Load byte"},
     {"LBU","Load byte unsigned"},
