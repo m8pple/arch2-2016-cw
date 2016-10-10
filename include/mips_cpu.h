@@ -18,7 +18,7 @@ extern "C"{
 
 /*! Represents the state of a cpu.
 	
-	This another opaque data type, similar to \ref mips_mem_provider.
+	This an opaque data type, similar to \ref mips_mem_provider.
 	
 	\struct mips_cpu_impl
 */
@@ -191,7 +191,7 @@ mips_error mips_cpu_set_debug_level(mips_cpu_h state, unsigned level, FILE *dest
 
 	\param state Either a handle to a valid simulation state, or an empty (NULL) handle.
 
-	It is legal to pass an empty handle to mips_cpu_free. It is illegal
+	It is legal to pass an empty (NULL) handle to mips_cpu_free. It is illegal
 	to pass the same non-empty handle to mips_cpu_free twice, and will
 	result in undefined behaviour (i.e. anything could happen):
 	

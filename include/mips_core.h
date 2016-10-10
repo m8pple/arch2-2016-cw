@@ -10,7 +10,7 @@
     matching the internal types of a processor, and for managing
     conversions from signed to unsigned types. The C/C++ standard has certain
     (very strict) rules for conversion between types, which are different from
-    the rules of any particular CPU. In an extremely legalitic interpretation, the
+    the rules of any particular CPU. In an extremely legalistic interpretation, the
     integer encoding is not necessarily twos complement, but we
     will mandate that all target architectures use a twos complement
     representation.
@@ -46,11 +46,12 @@ typedef enum _mips_error{
     //! Error or exception from the simulated processor or program.
     ///@{
     mips_ExceptionBreak=0x2000,
-    mips_ExceptionInvalidAddress=0x2001,
-    mips_ExceptionInvalidAlignment=0x2002,
-    mips_ExceptionAccessViolation=0x2003,
-    mips_ExceptionInvalidInstruction=0x2004,
-    mips_ExceptionArithmeticOverflow=0x2005,
+    mips_ExceptionInvalidLength=0x2001,
+    mips_ExceptionInvalidAddress=0x2002,
+    mips_ExceptionInvalidAlignment=0x2003,
+    mips_ExceptionAccessViolation=0x2004,
+    mips_ExceptionInvalidInstruction=0x2005,
+    mips_ExceptionArithmeticOverflow=0x2006,
     ///@}
     
     /*! This is an extension point for implementations. Codes

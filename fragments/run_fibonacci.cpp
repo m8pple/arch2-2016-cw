@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
         srcName=argv[1];
     }
     
-    mips_mem_h m=mips_mem_create_ram(0x20000, 4);
+    mips_mem_h m=mips_mem_create_ram(0x20000);
     mips_cpu_h c=mips_cpu_create(m);
     
     FILE *src=fopen(srcName,"rb");

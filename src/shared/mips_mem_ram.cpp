@@ -12,14 +12,16 @@
 struct mips_mem_provider
 {
 	uint32_t length;
-	uint32_t blockSize;
 	uint8_t *data;
 };
 
 extern "C" mips_mem_h mips_mem_create_ram(
-	uint32_t cbMem,	//!< Total number of bytes of ram
-	uint32_t blockSize	//!< Granularity in bytes
+	uint32_t cbMem	//!< Total number of bytes of ram
 ){
+	if(cbMem>0x10000000){
+		return 0; // No more than 256MB of RAM
+	}
+	
 	uint8_t *data=(uint8_t*)malloc(cbMem);
 	if(data==0)
 		return 0;
@@ -31,7 +33,6 @@ extern "C" mips_mem_h mips_mem_create_ram(
 	}
 	
 	mem->length=cbMem;
-	mem->blockSize=blockSize;
 	mem->data=data;
 	
 	return mem;
@@ -45,13 +46,15 @@ static mips_error mips_mem_read_write(
     uint8_t *dataOut
 )
 {	
-	if(mem==0)
+	if(mem==0){
 		return mips_ErrorInvalidHandle;
-	
-	if(0 != (address%mem->blockSize) ){
-		return mips_ExceptionInvalidAlignment;
 	}
-	if(0 != ((address+length)%mem->blockSize)){
+	
+	if( (length!=1) && (length!=2) && (length!=4) ){
+		return mips_ExceptionInvalidLength;
+	}
+	
+	if(0 != (address % length) ){
 		return mips_ExceptionInvalidAlignment;
 	}
 	if((address+length) > mem->length){	// A subtle bug here, maybe?

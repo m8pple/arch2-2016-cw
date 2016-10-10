@@ -1,5 +1,9 @@
-Architecture II 2015, Coursework 1
-==================================
+Architecture II 2016, Coursework
+================================
+
+This is a living specification. Please feel free to post
+questions as issues, or submit pull requests if you see
+a chance for improvements.
 
 Goals of this coursework
 ------------------------
@@ -10,7 +14,7 @@ There are three central aims of this coursework:
   processor actually functions. The overall functionality
   of how a processor works is relatively easy to grasp,
   but there is lots of interesting detail which gives
-  you a lot of insight (both into CPUs, but also into
+  you some insight (both into CPUs, but also into
   software and digital design).
   
 - Understand the importance of having good specifications,
@@ -21,12 +25,14 @@ There are three central aims of this coursework:
  
 - Develop your skills in coding from scratch. There is
   not much scaffolding here, I am genuinely asking you
-  to create your own CPU simulator from scratch.
+  to create your own CPU simulator from scratch. You
+  will also hopefully learn some important lessons about
+  reducing code repetition and automation.
   
 Coursework Deliverables
 -----------------------
 
-There are two C/C++ components to this coursework:
+There are two C++ [deliverables](https://en.wikipedia.org/wiki/Deliverable) for this coursework:
 
 1. Create a MIPS software simulator
 
@@ -44,32 +50,38 @@ the original directory structure and files, as well as the
 files that you have contributed. The two key things you will
 be adding are:
 
- - `src/[your_login]/mips_cpu.c` or `mips_cpu.cpp`
+ - `src/[your_login]/mips_cpu.cpp`
  
- - `src/[your_login]/test_mips.c` or `test_mips.cpp`
+ - `src/[your_login]/test_mips.cpp`
  
 The first part is the implementation of a mips simulator, and
-is essentially a library that implements the api found in
-include/mips_cpu.h. You can use C or C++, either is fine.
+is essentially a library that implements the api found in [`include/mips_cpu.h`](include/mips_cpu.h).
 If you want to split into multiple files, then feel free to do
-so - anything which matches the pattern `src/[your_login]/mips_cpu_*.c`
-or `src/[your_login]/mips_cpu_*.cpp` will also get compiled into
-your library. 
+so - anything which matches the pattern `src/[your_login]/mips_cpu_*.cpp`
+or `src/[your_login]/mips_cpu_*/*.cpp` will also get compiled into your library.
+So the three types of source file that will get compiled into your CPU are:
+
+- `src/[your_login]/mips_cpu.cpp` (must exist)
+
+- `src/[your_login]/mips_cpu_*.cpp` (if any)
+
+- `src/[your_login]/mips_cpu_*/*.cpp` (if any)
 
 The second part is the test suite which will drive your
-simulator and make it do things. This is a C or C++ program
-(so it will have a main function), and should be either
-`src/[your_login]/test_mips.c` or `src/[your_login]/test_mips.cpp`.
-Again, if you want to split into multiple files, anything
-that matches the pattern `src/[your_login]/test_mips_*.c` or
-`src/[your_login]/test_mips_*.cpp` will get compiled into
-your program.
+simulator and make it do things. This is a C++ program
+(so it will have a main function) in a file called `src/[your_login]/test_mips.cpp`.
+Again, your can split it into multiple files, so anything
+that matches these patterns will get compiled in:
 
-Update: by request, I will also include c or C++ files in
-directories matching `src/[your_login]/*`. See issue #2.
+- `src/[your_login]/test_mips.cpp` (must exist)
 
-You can also add your own private header files (generally
-a good idea), which should be part of the submitted zip file,
+- `src/[your_login]/test_mips_*.cpp` (if any)
+
+- `src/[your_login]/test_mips_*/*.cpp` (if any)
+
+
+You can also add your own private header files (often a good idea),
+which should be part of the submitted zip file,
 but they don't need to follow any specific pattern. However,
 they should be completely located within the `src/[your_login]`
 directory or a sub-directory of it. Note that your simulator
@@ -82,33 +94,35 @@ The directory structure should look like:
     .
     +-readme.md  # This document
     |
-    +-include
+    +-include    # A directory that you don't own. Don't put things here.
     | |
     | +-mips.h
     | +-mips_*.h  # Other mips headers
     |
     +-src
     | |
-    | +-shared
+    | +-shared   # This is shared with everyone. Don't put things here.
     | | | 
     | | +-mips_mem_ram.cpp
     | | +-mips_test_framework.cpp
     | |
-    | +-[your_login] # This is your private folder
+    | +-[your_login] # This is your private folder. Do whatever you like here.
     |   |
-    |   +-mips_cpu.c or mips_cpu.cpp
-    |   +-mips_cpu_*.c or mips_cpu_*.cpp (if you want them)
+    |   +-mips_cpu.cpp
+    |   +-mips_cpu_*.cpp (if you want them)
+    |   +-mips_cpu_*/*.cpp (if you want them)
     |   |
-    |   +-test_mips.c or test_mips.cpp
-    |   +-test_mips_*.c or test_mips_*.cpp (if you want them)
+    |   +-test_mips.cpp
+    |   +-test_mips_*.cpp (if you want them)
+    |   +-test_mips_*/*.cpp (if you want them)
     |   |
     |   +-(anything else you want, e.g. headers, docs)
     |
-    +-doc
+    +-doc # Used for doxygen (if generated)
     |
-    +-fragments # Some very simple examples of C, assembly, and binary code
+    +-fragments # Some simple shared examples of C, assembly, and binary code
     |
-    +-(anything else you want, but it won't be available in the environment)
+    +-(anything else you want, but it won't be available in the test environment)
 
 Your submitted code will need to work within the
 compilation environment specified later on (another
@@ -151,9 +165,9 @@ is weighted as follows:
   even if you have a small number of instructions implemented,
   as long as they are tested well.
   
-- (10%) Bug reports: This specification will not be perfect, and
+- (at most 10%) Bug reports: This specification will not be perfect, and
   I welcome bug reports. Things like spelling mistakes are
-  welcome, but not especially valuable. What is important
+  welcome, but not quite as valuable. What is important
   are points of genuine ambiguity, or errors of implementation
   in the code spec. Bug reports should identify both the
   problem, and how to reproduce it, and particularly welcome are
@@ -165,17 +179,17 @@ Except for the marks for compilation (where everyone
 should really get full marks, but is down to me assessing
 how much manual work I needed to put in) and bug reports
 (which are subjective and more rare) the assessment is
-entirely quantitative and metric based.
+quantitative and metric based.
 
 There are two submission deadlines, one soft, one hard:
 
-- Friday 23th October 22:00: deadline for formative (ungraded)
+- Friday 21st October 22:00: deadline for formative (ungraded)
   assessment. If you submit a version by this deadline, it
   will be put through a subset of the assessment. The
-  results (but not a grade), will be returned on Monday 26th.
+  results (but not a grade), will be returned on Monday 21st.
   Submission is not required, but is obviously encouraged.
 
-- Friday 30th October 22:00: deadline for summative (graded)
+- Friday 28th October 22:00: deadline for summative (graded)
   assessment. Whether or not you submitted for the previous
   deadline, everyone must submit for this deadline. This
   will be the part which results in the grade for this
@@ -197,7 +211,7 @@ APIs, as no platform-specific interaction with the environment is
 needed during execution. So it should work happily on both linux
 and windows.
 
-The actual target environment is the lab Ubuntu environment,
+The actual target environment is the lab Linux environment,
 and the version of gcc/g++ installed there. You can develop
 in Windows, MacOS, or another linux, but you need to make sure
 it works in that environment.
@@ -347,6 +361,43 @@ difficult, but testing them can be more complex. The 4s are doable,
 but have some complexity in implementation and testing. Implementing
 the 5s correctly is really quite challenging.
 
+Plagiarism
+----------
+
+Everyone is implementing the same CPU, with the same API, which
+means that there will be a certain amount of similarity. However,
+there will also be differences, and you might be surprised by
+the amount of variation that ones sees. I do actually read your
+code too, and you'd be surprised how well the human brain remembers
+patterns and oddities, even across 40 submissions (particularly
+if that brain has been programming for some years). There are
+also ways of automatically looking for similarities for further
+review by a human.
+
+This coursework is also largely unchanged since last year, and
+substantially similar to the year before. You may well be able
+to get hold of someone's solution from a previous year. But
+bear in mind that I have a copy of every solution ever submitted
+for this coursework, in an easily searchable file structure.
+
+Please note that discussion is not plagiarism, and even showing
+each other your solutions is generally fine. It is interesting
+to see how someone else has solved the same problem, and even
+having seen their solution, you will not produce the same code
+(unless you stare at it and type it in). The point where it
+becomes plagiarism is when the code is shared between students - never
+give someone a copy of your code on a USB or give them access
+to a git repo.
+
+By far the most common type of plagiarism is where one (well-meaning)
+student give's another (well-meaning) student their submission so
+that they can "have a look". The receiver may then face time
+pressure, so despite the good intentions of all they end up using
+some bits and pieces from the originator's submission.
+Unfortunately, in such cases both students will be considered to
+have plagiarised.
+
+
 Getting Started
 ---------------
 
@@ -372,10 +423,10 @@ You can get the source code either by:
    if you're interested in that direction.
 
 While it is not required, I would highly recommend that you try
-option 2 (I will use this route in class). It is good to get some
-experience of how source control works, and acting as a consumer is
-a good way of understanding what is going on. There are a number
-of GUI tools available which make things easier:
+option 2 (I will use this route in class), and option 3 is even better.
+It is good to get some experience of how source control works,
+and acting as a consumer is a good way of understanding what is going on.
+There are a number of GUI tools available which make things easier:
 
  - The github GUI is available for [Windows](https://windows.github.com/),
     [Mac](https://mac.github.com/).
@@ -434,9 +485,9 @@ helps to visualise how the hardware works.
 Some Questions I've recieved
 ----------------------------
 
-Note to 2015 students: I ran almost the same coursework
-last year, so these are some questions from then. And
-as you would hope and expect, I still have all of their
+Note to 2016 students: I ran almost the same coursework
+the last two years, so these are some questions from then. And
+as I mentioned, I still have all of their
 submissions in a readily accessible form should I choose
 to diff them against this years submissions.
 
@@ -475,7 +526,7 @@ kind of memory, whether each operation behaves correctly
 if it appears after a jump, and so on.
 
 So you are correct that the test_mips file should define the
-functionality, but _only_ the functionality, it should say
+functionality, but _only_ the functionality - it should say
 nothing about the implementation of that functionality. If
 you know the initial state of a MIPS, plus the memory it
 is attached to, you should be able to predict precisely what
@@ -575,7 +626,7 @@ better idea why it might be useful.
 > did in the skeleton file? 
 
 You control the internals of the cpu state,
-so on the `mips_cpu.c` side, you can totally
+so on the `mips_cpu.cpp` side, you can totally
 reach into `state->pc` and read it out. Or
 you can use `mips_cpu_get_pc`. Either is fine,
 because you are on the implementation side

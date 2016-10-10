@@ -90,15 +90,12 @@ mips_error mips_mem_read(
 /*! Perform a write transaction on the memory
     
     The implementation is expected to check that the transaction
-    matches the alignment and block size requirements, and return an
-    error if they are violated.
+    matches the alignment requirements, and return an error if they are violated.
     
     The input pointer is a pointer to bytes, because the RAM is byte
-    addressable, however the transaction size may consist of multiple
-    bytes - indeed, for memories with a block size greater than one,
-    all transactions must be multiple bytes. To write a larger piece
-    of data, you can use pointer casting, or pass in an array. For
-    example, if I want to write 0xFF001100 to address 12, I could do:
+    addressable, however the transaction size may be 1, 2, or 4 bytes.
+    To write a larger piece of data, you can use pointer casting, or pass in an array.
+    For example, if I want to write 0xFF001100 to address 12, I could do:
     
         uint32_t xv=0xFF001100;
         mips_error err=mips_mem_write(mem, 12, 4, (uint8_t*)&xv);
@@ -175,41 +172,18 @@ void mips_mem_free(mips_mem_h mem);
 
 /*! Initialise a new RAM of the given size.
 
-    The RAM will expect transactions to be at the granularity
-    of the blockSize. This means any reads or writes must be aligned
-    to the correct blockSize, and should consist of an integer number
-    of blocks. For example, choosing blockSize=4 would result in a RAM
-    that only supports aligned 32-bit reads and writes.
+    The RAM will expect transactions to be aligned at the granularity
+    of the transfer, so 4-byte transfers are aligned on 4-byte addresses,
+    2-byte transfers on 2-byte address, and single byte transfers can
+    have any address.
     
-    You can think of the blockSize as being equivalent to the number
-    of wires in the data-bus of the memory. If the only wires you
-    have are readEnable, writeEnable, address, dataIn, and dataOut,
-    then within one cycle you could do a write by asserting writeEnable=1,
-    specifying the address, and driving the data to be written onto dataIn.
-    Or you could perform a read by asserting readEnable=1, driving the
-    address bus, and looking at the value that the RAM drives onto dataOut.
-    If blockSize=4, then we would have 32 wires for both dataIn and dataOut,
-    and any address would need to have the two least significant bits as zero.
-    
-    In MIPS the basic unit of transfer is 32-bits, so the granularity of the
-    data bus is also 32-bits, and blockSize must be 4.
-    
-    "Why do we even have this blockSize if it is always 4?" : It is in
-    anticipation of a future extension, and a mistake on my part (from
-    a teaching point of view). I should have given it the simpler signature of:
-    
-        mips_mem_h mips_mem_create_ram(uint32_t cbMem);
-    
-    and stated that it creates a RAM of the given size with a granularity of 4.
-    
-    "How can MIPS do SH (store half) efficiently if this is the case?" - An
-    actual MIPS implementation would have what are called "byte-enables",
-    which are extra signals saying which bytes within the data bus are
-    valid, but I didn't include them in the API as they complicate things.
+    This interface is over-simplifying things, and ignoring
+    "byte-enables". These are what allows a CPU to indicate
+    which of the bytes within a 32-bit bus are being actively
+    written.
 */
 mips_mem_h mips_mem_create_ram(
-    uint32_t cbMem,	//!< Total number of bytes of ram
-    uint32_t blockSize	//!< Granularity of transactions supported by RAM
+    uint32_t cbMem	//!< Total number of bytes of ram
 );
 
 /*!
