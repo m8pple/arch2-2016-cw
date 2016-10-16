@@ -21,12 +21,16 @@ DEFAULT_OBJECTS = \
 USER_CPU_SRCS = \
 	$(wildcard src/$(LOGIN)/mips_cpu.cpp) \
 	$(wildcard src/$(LOGIN)/mips_cpu_*.cpp) \
-	$(wildcard src/$(LOGIN)/mips_cpu/*.cpp)
+	$(wildcard src/$(LOGIN)/mips_cpu/*.cpp) \
+	$(wildcard src/$(LOGIN)/mips_cpu_*/*.cpp)
+
 	
 USER_TEST_SRCS = \
 	$(wildcard src/$(LOGIN)/test_mips.cpp) \
 	$(wildcard src/$(LOGIN)/test_mips_*.cpp) \
-	$(wildcard src/$(LOGIN)/test_mips/*.cpp)
+	$(wildcard src/$(LOGIN)/test_mips/*.cpp) \
+	$(wildcard src/$(LOGIN)/test_mips_*/*.cpp)
+
 	
 USER_CPU_OBJECTS = $(patsubst %.cpp,%.o,$(USER_CPU_SRCS))
 USER_TEST_OBJECTS = $(patsubst %.cpp,%.o,$(USER_TEST_SRCS))

@@ -79,6 +79,9 @@ that matches these patterns will get compiled in:
 
 - `src/[your_login]/test_mips_*/*.cpp` (if any)
 
+_Original makefile also included another pattern (thanks to @lorenzo2897, see
+  [issue #21](https://github.com/m8pple/arch2-2016-cw/issues/21)._
+
 
 You can also add your own private header files (often a good idea),
 which should be part of the submitted zip file,
