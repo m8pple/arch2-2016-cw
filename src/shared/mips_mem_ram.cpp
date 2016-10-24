@@ -18,7 +18,7 @@ struct mips_mem_provider
 extern "C" mips_mem_h mips_mem_create_ram(
 	uint32_t cbMem	//!< Total number of bytes of ram
 ){
-	if(cbMem>0x10000000){
+	if(cbMem>0x20000000){
 		return 0; // No more than 256MB of RAM
 	}
 	
