@@ -57,7 +57,7 @@ static mips_error mips_mem_read_write(
 	if(0 != (address % length) ){
 		return mips_ExceptionInvalidAlignment;
 	}
-	if((address+length) > mem->length || address > (UINT32_MAX - length)){	// A subtle bug here, maybe?
+	if(((address+length) > mem->length) || (address > (UINT32_MAX - length))){	// A subtle bug here, maybe?
 		return mips_ExceptionInvalidAddress;
 	}
 	
