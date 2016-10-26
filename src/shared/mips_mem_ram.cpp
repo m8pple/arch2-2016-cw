@@ -19,7 +19,7 @@ extern "C" mips_mem_h mips_mem_create_ram(
 	uint32_t cbMem	//!< Total number of bytes of ram
 ){
 	if(cbMem>0x20000000){
-		return 0; // No more than 256MB of RAM
+		return 0; // No more than 512MB of RAM
 	}
 	
 	uint8_t *data=(uint8_t*)malloc(cbMem);
@@ -57,7 +57,7 @@ static mips_error mips_mem_read_write(
 	if(0 != (address % length) ){
 		return mips_ExceptionInvalidAlignment;
 	}
-	if((address+length) > mem->length){	// A subtle bug here, maybe?
+	if(((address+length) > mem->length) || (address > (UINT32_MAX - length))){	// A subtle bug here, maybe?
 		return mips_ExceptionInvalidAddress;
 	}
 	
